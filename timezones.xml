@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<root>
+   <name>Timezones</name>
+   <key>timezones</key>
+   <state>stable</state>
+    <logo>https://forge.glpi-project.org/svn/timezones/timezones.png</logo>
+   <description>
+      <short>
+         <fr><![CDATA[Gère les multi-timezones.]]></fr>
+         <en><![CDATA[Multi-timezones management.]]></en>
+      </short>
+      <long>
+         <fr><![CDATA[Ce plugin est fait pour assurer la bonne gestion des timezones. Particulièrement utile lorsque GLPI est utilisé dans un contexte international.]]></fr>
+         <en><![CDATA[This plugin ensures good management of timezones. Is a must when GLPI is used worldwide.]]></en>
+      </long>
+   </description>
+   <homepage>https://forge.glpi-project.org/projects/timezones/</homepage>
+   <download>https://forge.glpi-project.org/projects/timezones/files</download>
+   <authors>
+      <author>Olivier Moron </author>
+   </authors>
+   <versions>
+   <version>
+          <num>1.2.0</num>
+          <compatibility>0.83</compatibility>
+      </version>
+   <version>
+          <num>1.2.0</num>
+          <compatibility>0.85</compatibility>
+      </version>
+   <version>
+          <num>1.3.0</num>
+          <compatibility>0.90</compatibility>
+      </version>
+   </versions>
+   <langs>
+      <lang>en_gb</lang>
+   </langs>
+   <license><![CDATA[GPL v2+]]></license>
+   <tags>
+         <fr>
+            <tag>Calendrier</tag>
+            <tag>Helpdesk</tag>
+			<tag>Utilisateurs</tag>
+			<tag>Données</tag>
+         </fr>
+         <en>
+            <tag>Calendar</tag>
+            <tag>Helpdesk</tag>
+			<tag>Users</tag>
+			<tag>Data</tag>
+         </en>
+   </tags>
+</root>
