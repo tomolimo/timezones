@@ -16,6 +16,8 @@
    </description>
    <homepage>https://forge.glpi-project.org/projects/timezones/</homepage>
    <download>https://forge.glpi-project.org/projects/timezones/files</download>
+   <issues>https://github.com/tomolimo/timezones/issues</issues>
+   <readme>https://forge.glpi-project.org/projects/timezones/wiki</readme>
    <authors>
       <author>Olivier Moron </author>
    </authors>
