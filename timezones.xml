@@ -3,7 +3,7 @@
    <name>Timezones</name>
    <key>timezones</key>
    <state>stable</state>
-    <logo>https://forge.glpi-project.org/svn/timezones/timezones.png</logo>
+    <logo>https://raw.githubusercontent.com/tomolimo/timezones/master/timezones.png</logo>
    <description>
       <short>
          <fr><![CDATA[Gère les multi-timezones.]]></fr>
@@ -14,10 +14,10 @@
          <en><![CDATA[This plugin ensures good management of timezones. Is a must when GLPI is used worldwide.]]></en>
       </long>
    </description>
-   <homepage>https://forge.glpi-project.org/projects/timezones/</homepage>
-   <download>https://forge.glpi-project.org/projects/timezones/files</download>
+   <homepage>https://github.com/tomolimo/timezones</homepage>
+   <download>https://github.com/tomolimo/timezones/releases</download>
    <issues>https://github.com/tomolimo/timezones/issues</issues>
-   <readme>https://forge.glpi-project.org/projects/timezones/wiki</readme>
+   <readme>https://github.com/tomolimo/timezones/wiki</readme>
    <authors>
       <author>Olivier Moron </author>
    </authors>
