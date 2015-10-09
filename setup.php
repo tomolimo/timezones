@@ -98,7 +98,7 @@ function plugin_timezones_check_prerequisites() {
     global $DB, $LANG;
    
     // Strict version check (could be less strict, or could allow various version)
-   if (version_compare(GLPI_VERSION,'0.83','lt') || version_compare(GLPI_VERSION,'0.86','ge')) {
+   if (version_compare(GLPI_VERSION,'0.83','lt') || version_compare(GLPI_VERSION,'0.91','ge')) {
         echo $LANG['timezones']['glpiversion'];
         return false;
    }
