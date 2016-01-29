@@ -10,33 +10,22 @@
         }
     }
 
-    xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET", prefURL + "/plugins/timezones/ajax/tz.php", true);
-    xmlhttp.onreadystatechange = function (aEvt) {
-        if (xmlhttp.readyState == 4) {
-            if (xmlhttp.status == 200) {
-                TZ_INFO = JSON.parse(xmlhttp.responseText);
-                var time_zone_name = TZ_INFO['tz'];
-                prefURL += '/front/preference.php';
-                //window.addEventListener('load', function () {
-                    // search for div with id=c_preference
-                    // to add a new <li> at end of <ul>
-                    try {
-                        var eltUL = document.getElementById('c_preference').firstChild;
-                        if (eltUL) {
-                            eltUL.innerHTML += "<li><a title='Time zone: " + time_zone_name + "' href='" + prefURL + "'>" + time_zone_name + "</a></li>";
-                            }
-                    } catch( ex ) {
-                    }
-
-                //});
-            }
-            else { /*debugger; */ 
-            }
+    $.ajax({
+        url: prefURL + '/plugins/timezones/ajax/tz.php',
+        cache: false,
+        success: function (data, textStatus, jqXHR) {
+            TZ_INFO = $.parseJSON(data);
+            var time_zone_name = TZ_INFO['tz'];
+            prefURL += '/front/preference.php';
+            $(function () {
+                var eltUL = $('#c_preference ul');
+                if (eltUL) {
+                    eltUL.append("<li><a href='" + prefURL + "'>" + time_zone_name + "</a></li>");
+                }
+            });
         }
-    };
-    xmlhttp.send(null);
-          
+    });
+
 })();
 
 

@@ -4,8 +4,7 @@
 chdir(dirname($_SERVER["SCRIPT_FILENAME"]));
 
 define('DO_NOT_CHECK_HTTP_REFERER', 1);
-define('GLPI_ROOT', '../../..');
-include (GLPI_ROOT . "/inc/includes.php");
+include ( "../../../inc/includes.php");
 
 $plug = new Plugin;
 if ( $plug->isInstalled('timezones') ) {
@@ -64,7 +63,7 @@ if ( $plug->isInstalled('timezones') ) {
 
         // must delete last ',' from $tablebackup and $tablealter if we have one
         // create backup of the column definitions so that we may apply them to restore database when uninstalling plugin
-        $tablebackup = mysql_escape_string( rtrim( $tablebackup, "," ) ) ;
+        $tablebackup = $DB->dbh->real_escape_string( rtrim( $tablebackup, "," ) ) ;
         $tablealter =  rtrim( $tablealter, "," ) ;
 
         // special case for glpi_*tasks tables for objects like TicketTask, ProblemTask, ChangeTask, ProjectTask

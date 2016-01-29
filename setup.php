@@ -82,11 +82,11 @@ function plugin_init_timezones() {
 function plugin_version_timezones() {
 
    return array('name'           => 'Timezones',
-                'version'        => '1.3.0',
+                'version'        => '2.0.0',
                 'author'         => 'Olivier Moron',
                 'license'        => 'GPLv2+',
                 'homepage'       => 'https://forge.indepnet.net/projects/timezones',
-                'minGlpiVersion' => '0.83');// For compatibility / no install in version < 0.83
+                'minGlpiVersion' => '0.85');// For compatibility / no install in version < 0.85
 }
 
 
@@ -98,7 +98,7 @@ function plugin_timezones_check_prerequisites() {
     global $DB, $LANG;
    
     // Strict version check (could be less strict, or could allow various version)
-   if (version_compare(GLPI_VERSION,'0.83','lt') || version_compare(GLPI_VERSION,'0.91','ge')) {
+   if (version_compare(GLPI_VERSION,'0.85','lt') ) {
         echo $LANG['timezones']['glpiversion'];
         return false;
    }
