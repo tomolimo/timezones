@@ -14,7 +14,7 @@
 				Depuis la version 2.0.0 le plugin est compatible avec PHP 5 et PHP 7,
 				Depuis la version 2.0.0 le fr_FR a été ajouté.]]></fr>
          <en><![CDATA[This plugin ensures good management of timezones. Is a must when GLPI is used worldwide.
-				Since version 2.0.0 pluging is compatible with PHP 5 and PHP 7,
+				Since version 2.0.0 plugin is compatible with PHP 5 and PHP 7,
 				Since version 2.0.0 fr_FR has been added.]]></en>
       </long>
    </description>
