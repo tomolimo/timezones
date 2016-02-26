@@ -11,7 +11,10 @@ Version 2.0.0:
 GLPI: 0.85, 0.90 | PHP: 5, 7 | locale: en, fr
 
 Installation procedure:
-Like any toher GLPi plugin: you must copy the package to the plugins folder, and don't forget to rename the downloaded folder into the right name: "timezones" instead of timezones-master or timezones-x.x.x like by default github will download it to you.
+Like any other GLPi plugin: you must copy the package to the plugins folder, and don't forget to rename the downloaded folder into the right name: "timezones" instead of timezones-master or timezones-x.x.x like by default github will download it to you.
 
-Beware also that sometimes the 'Enable' button on the GLPi plugins setup page is not usable: try to press F5 (page reload) to view the right message from the timezones plugin.
+Beware also that sometimes the 'Enable' button on the GLPi plugin setup page is not usable: try to press F5 (page reload) to view the right message from the timezones plugin.
 
+Thank you
+Regards,
+Tomolimo
