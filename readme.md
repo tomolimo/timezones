@@ -16,7 +16,5 @@ Like any other GLPi plugin: you must copy the package to the plugins folder, and
 Beware also that sometimes the 'Enable' button on the GLPi plugin setup page is not usable: try to press F5 (page reload) to view the right message from the timezones plugin.
 
 Thank you
-
 Regards,
-
 Tomolimo
