@@ -1,7 +1,7 @@
 <?php
 /*
  * -------------------------------------------------------------------------
-Timezones management plugin 
+Timezones management plugin
 Copyright (C) 2015 by Raynet SAS a company of A.Raymond Network.
 
 http://www.araymond.com
@@ -46,10 +46,10 @@ function plugin_init_timezones() {
 
    $PLUGIN_HOOKS['post_init']['timezones'] = 'plugin_timezones_postinit';
 
-   $PLUGIN_HOOKS['pre_item_update']['timezones'] 
+   $PLUGIN_HOOKS['pre_item_update']['timezones']
       = array( 'User' => array( 'PluginTimezonesUser', 'preItemUpdate'));
 
-   $PLUGIN_HOOKS['item_update']['timezones'] 
+   $PLUGIN_HOOKS['item_update']['timezones']
       = array( 'TicketTask' => 'plugin_item_add_update_timezones_tasks'
                 ,'ProblemTask' => 'plugin_item_add_update_timezones_tasks'
                 ,'ProjectTask' => 'plugin_item_add_update_timezones_tasks'
@@ -57,7 +57,7 @@ function plugin_init_timezones() {
                 ,'Config' => 'plugin_item_add_update_timezones_dbconnection'
               );
 
-   $PLUGIN_HOOKS['item_add']['timezones'] 
+   $PLUGIN_HOOKS['item_add']['timezones']
       = array( 'TicketTask' => 'plugin_item_add_update_timezones_tasks'
                 ,'ProblemTask' => 'plugin_item_add_update_timezones_tasks'
                 ,'ProjectTask' => 'plugin_item_add_update_timezones_tasks'
@@ -66,9 +66,9 @@ function plugin_init_timezones() {
               );
 
    //$tz=(isset($_SESSION['glpitimezone'])?$_SESSION['glpitimezone']:date_default_timezone_get());
-   //$PLUGIN_HOOKS['add_javascript']['timezones'] = "js/tz.php?tz=$tz";   
-   $PLUGIN_HOOKS['add_javascript']['timezones'] = "js/tz.js";   
-   
+   //$PLUGIN_HOOKS['add_javascript']['timezones'] = "js/tz.php?tz=$tz";
+   $PLUGIN_HOOKS['add_javascript']['timezones'] = "js/tz.js";
+
    $PLUGIN_HOOKS['csrf_compliant']['timezones'] = true;
 
    //$PLUGIN_HOOKS['use_massive_action']['timezones'] = 1;
@@ -82,7 +82,7 @@ function plugin_init_timezones() {
 function plugin_version_timezones() {
 
    return array('name'           => 'Timezones',
-                'version'        => '2.0.0',
+                'version'        => '2.0.1',
                 'author'         => 'Olivier Moron',
                 'license'        => 'GPLv2+',
                 'homepage'       => 'https://forge.indepnet.net/projects/timezones',
@@ -96,7 +96,7 @@ function plugin_version_timezones() {
  */
 function plugin_timezones_check_prerequisites() {
     global $DB, $LANG;
-   
+
     // Strict version check (could be less strict, or could allow various version)
    if (version_compare(GLPI_VERSION,'0.85','lt') ) {
         echo $LANG['timezones']['glpiversion'];
@@ -117,14 +117,16 @@ function plugin_timezones_check_prerequisites() {
 
 /**
  * Summary of plugin_timezones_check_config
- * @param mixed $verbose 
+ * @param mixed $verbose
  * @return bool
  */
 function plugin_timezones_check_config($verbose=false) {
    global $DB,$LANG;
-   
+
     // check if all datetime fields of the glpi db have been converted to timestamp otherwise, timezone management can't be done correctly
-    $query = "SELECT DISTINCT( TABLE_NAME ) from `INFORMATION_SCHEMA`.`COLUMNS` WHERE TABLE_SCHEMA = '".$DB->dbdefault."' AND TABLE_NAME LIKE 'glpi_%' AND COLUMN_TYPE IN ('DATETIME'); "; 
+   $query = "SELECT DISTINCT( `INFORMATION_SCHEMA`.`COLUMNS`.`TABLE_NAME` ), TABLE_TYPE from `INFORMATION_SCHEMA`.`COLUMNS`
+               JOIN `INFORMATION_SCHEMA`.`TABLES` ON `INFORMATION_SCHEMA`.`TABLES`.`TABLE_NAME` = `INFORMATION_SCHEMA`.`COLUMNS`.`TABLE_NAME` AND `INFORMATION_SCHEMA`.`TABLES`.`TABLE_TYPE` = 'BASE TABLE'
+               WHERE `INFORMATION_SCHEMA`.`COLUMNS`.TABLE_SCHEMA = '".$DB->dbdefault."' AND `INFORMATION_SCHEMA`.`COLUMNS`.`COLUMN_TYPE` IN ('DATETIME') ; ";
     $res = $DB->query( $query ) ;
     if( $DB->numrows( $res ) > 0 ) {
         if( $verbose ) {
