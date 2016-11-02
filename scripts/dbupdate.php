@@ -10,7 +10,9 @@ $plug = new Plugin;
 if ( $plug->isInstalled('timezones') ) {
     $now = date('Y-m-d H:i:s' ) ;
     // we are going to update datetime, date and time (?) types to timestamp type
-    $query = "SELECT DISTINCT( TABLE_NAME ) from `INFORMATION_SCHEMA`.`COLUMNS` WHERE TABLE_SCHEMA = '".$DB->dbdefault."' AND TABLE_NAME LIKE 'glpi_%' AND COLUMN_TYPE IN ('DATETIME'); "; 
+    $query = "SELECT DISTINCT( `INFORMATION_SCHEMA`.`COLUMNS`.`TABLE_NAME` ), TABLE_TYPE from `INFORMATION_SCHEMA`.`COLUMNS`
+               JOIN `INFORMATION_SCHEMA`.`TABLES` ON `INFORMATION_SCHEMA`.`TABLES`.`TABLE_NAME` = `INFORMATION_SCHEMA`.`COLUMNS`.`TABLE_NAME` AND `INFORMATION_SCHEMA`.`TABLES`.`TABLE_TYPE` = 'BASE TABLE'
+               WHERE `INFORMATION_SCHEMA`.`COLUMNS`.TABLE_SCHEMA = '".$DB->dbdefault."' AND `INFORMATION_SCHEMA`.`COLUMNS`.`COLUMN_TYPE` IN ('DATETIME') ; ";
     foreach($DB->request($query) as $table) {
         $tablealter = $tablebackup = '' ; // init by default
 
@@ -22,7 +24,7 @@ if ( $plug->isInstalled('timezones') ) {
         foreach($tablelines as $line){
             if( stripos( $line, " datetime " ) !== false ){
                 // then we must backup this line
-                $tablebackup .= "\n MODIFY ".$line;             
+                $tablebackup .= "\n MODIFY ".$line;
             }
         }
 
@@ -39,17 +41,17 @@ if ( $plug->isInstalled('timezones') ) {
             if( is_null($column['COLUMN_DEFAULT']) && $column['IS_NULLABLE']=='NO' ) { // no default
                 $defaultalter=" DEFAULT '0000-00-00 00:00:00'";
             } elseif( is_null($column['COLUMN_DEFAULT']) && $column['IS_NULLABLE']=='YES' ) {
-                $defaultalter = " DEFAULT NULL";                
+                $defaultalter = " DEFAULT NULL";
             } elseif( !is_null($column['COLUMN_DEFAULT'])  ) {
                 if( $column['COLUMN_DEFAULT'] == '0000-00-00 00:00:00' ){
                     $defaultalter = " DEFAULT '0000-00-00 00:00:00'";
                 } elseif( $column['COLUMN_DEFAULT'] < '1970-01-01 00:00:01' ) {
                     $defaultDate = new DateTime( '1970-01-01 00:00:01', new DateTimeZone( 'UTC' ) ) ;
-                    $defaultDate->setTimezone( new DateTimeZone( date_default_timezone_get() ) ); 
+                    $defaultDate->setTimezone( new DateTimeZone( date_default_timezone_get() ) );
                     $defaultalter = " DEFAULT '".$defaultDate->format("Y-m-d H:i:s")."'";
                 } elseif( $column['COLUMN_DEFAULT'] > '2038-01-19 03:14:07' ) {
                     $defaultDate = new DateTime( '2038-01-19 03:14:07', new DateTimeZone( 'UTC' ) ) ;
-                    $defaultDate->setTimezone( new DateTimeZone( date_default_timezone_get() ) ); 
+                    $defaultDate->setTimezone( new DateTimeZone( date_default_timezone_get() ) );
                     $defaultalter = " DEFAULT '".$defaultDate->format("Y-m-d H:i:s")."'";
                 } else {
                     $defaultalter = " DEFAULT '".$column['COLUMN_DEFAULT']."'";
@@ -58,7 +60,7 @@ if ( $plug->isInstalled('timezones') ) {
             if( $column['COLUMN_COMMENT'] != '' ) {
                 $commentalter = " COMMENT '".$column['COLUMN_COMMENT']."'" ;
             }
-            $tablealter .= "\n MODIFY COLUMN `".$column['COLUMN_NAME']."` TIMESTAMP $nullable $defaultalter $commentalter,"; 
+            $tablealter .= "\n MODIFY COLUMN `".$column['COLUMN_NAME']."` TIMESTAMP $nullable $defaultalter $commentalter,";
         }
 
         // must delete last ',' from $tablebackup and $tablealter if we have one
@@ -88,15 +90,15 @@ if ( $plug->isInstalled('timezones') ) {
         // apply alter to table
         $query ="ALTER TABLE  `".$table['TABLE_NAME']."` ".$tablealter.";" ;
         echo $query;
-        $DB->query( $query ) or die( " --> error when applying ". $DB->error()."\n"); 
-    
+        $DB->query( $query ) or die( " --> error when applying ". $DB->error()."\n");
+
         //echo "ALTER TABLE  `".$table['TABLE_NAME']."` $tablebackup" ;
         $query = "INSERT INTO `glpi_plugin_timezones_dbbackups` ( `date`, `table_name`, `alter_table`) VALUES ( '$now', '".$table['TABLE_NAME']."', 'ALTER TABLE  `".$table['TABLE_NAME']."` $tablebackup' );";
-        $DB->query( $query ) or die( ' --> error when backing up '.$DB->error()."\n"); 
+        $DB->query( $query ) or die( ' --> error when backing up '.$DB->error()."\n");
 
         echo " --> done\n";
     }
-   
+
 
 } else
     echo "Plugin 'Timezones' is not installed!\nPlease install it before applying script!\n" ;
