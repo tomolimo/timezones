@@ -85,7 +85,7 @@ function plugin_version_timezones() {
                 'version'        => '2.0.1',
                 'author'         => 'Olivier Moron',
                 'license'        => 'GPLv2+',
-                'homepage'       => 'https://forge.indepnet.net/projects/timezones',
+                'homepage'       => 'https://github.com/tomolimo/timezones',
                 'minGlpiVersion' => '0.85');// For compatibility / no install in version < 0.85
 }
 
