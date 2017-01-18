@@ -37,7 +37,6 @@ along with GLPI. If not, see <http://www.gnu.org/licenses/>.
 function plugin_init_timezones() {
     global $PLUGIN_HOOKS,$CFG_GLPI;
 
-
    Plugin::registerClass('PluginTimezonesUser',
                          array('addtabon'                    => array('Preference', 'User')));
 
@@ -98,17 +97,17 @@ function plugin_timezones_check_prerequisites() {
     global $DB, $LANG;
 
     // Strict version check (could be less strict, or could allow various version)
-   if (version_compare(GLPI_VERSION,'0.85','lt') ) {
+   if (version_compare(GLPI_VERSION, '0.85', 'lt')) {
         echo $LANG['timezones']['glpiversion'];
         return false;
    }
 
    // check if mySQL time_zones tables are empty
-   $query = "SELECT * FROM mysql.time_zone_name" ;
-   $res = $DB->query( $query ) ;
-   if( $DB->numrows( $res ) == 0 ) {
-       echo $LANG['timezones']['timezonetables'] ;
-       return false ;
+   $query = "SELECT * FROM mysql.time_zone_name";
+   $res = $DB->query( $query );
+   if ($DB->numrows( $res ) == 0) {
+       echo $LANG['timezones']['timezonetables'];
+       return false;
    }
 
    return true;
@@ -127,13 +126,13 @@ function plugin_timezones_check_config($verbose=false) {
    $query = "SELECT DISTINCT( `INFORMATION_SCHEMA`.`COLUMNS`.`TABLE_NAME` ), TABLE_TYPE from `INFORMATION_SCHEMA`.`COLUMNS`
                JOIN `INFORMATION_SCHEMA`.`TABLES` ON `INFORMATION_SCHEMA`.`TABLES`.`TABLE_NAME` = `INFORMATION_SCHEMA`.`COLUMNS`.`TABLE_NAME` AND `INFORMATION_SCHEMA`.`TABLES`.`TABLE_TYPE` = 'BASE TABLE'
                WHERE `INFORMATION_SCHEMA`.`COLUMNS`.TABLE_SCHEMA = '".$DB->dbdefault."' AND `INFORMATION_SCHEMA`.`COLUMNS`.`COLUMN_TYPE` IN ('DATETIME') ; ";
-    $res = $DB->query( $query ) ;
-    if( $DB->numrows( $res ) > 0 ) {
-        if( $verbose ) {
-            echo $LANG['timezones']['dbnotconverted'];
-        }
-        return false ;
-    }
+    $res = $DB->query( $query );
+   if ($DB->numrows( $res ) > 0) {
+      if ($verbose) {
+         echo $LANG['timezones']['dbnotconverted'];
+      }
+      return false;
+   }
 
    return true;
 }

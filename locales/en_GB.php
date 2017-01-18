@@ -11,4 +11,3 @@ $LANG['timezones']['item']['header']="Time zone Management";
 $LANG['timezones']['item']['dropdown']="Select your Time zone";
 $LANG['timezones']['item']['submit']="Save";
 
-?>
