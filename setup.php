@@ -82,7 +82,7 @@ function plugin_init_timezones() {
 function plugin_version_timezones() {
 
    return array('name'           => 'Timezones',
-                'version'        => '2.0.2',
+                'version'        => '2.0.3',
                 'author'         => 'Olivier Moron',
                 'license'        => 'GPLv2+',
                 'homepage'       => 'https://github.com/tomolimo/timezones',

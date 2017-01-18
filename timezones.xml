@@ -10,12 +10,17 @@
          <en><![CDATA[Multi-timezones management.]]></en>
       </short>
       <long>
-         <fr><![CDATA[Ce plugin est fait pour assurer la bonne gestion des timezones. Particulièrement utile lorsque GLPI est utilisé dans un contexte international. 
+         <fr>
+          <![CDATA[Ce plugin est fait pour assurer la bonne gestion des timezones. Particulièrement utile lorsque GLPI est utilisé dans un contexte international. 
 				Depuis la version 2.0.0 le plugin est compatible avec PHP 5 et PHP 7,
-				Depuis la version 2.0.0 le fr_FR a été ajouté.]]></fr>
-         <en><![CDATA[This plugin ensures good management of timezones. Is a must when GLPI is used worldwide.
+				Depuis la version 2.0.0 le fr_FR a été ajouté.
+        Depuis la version 2.0.3 le ru_RU a été ajouté.]]></fr>
+         <en>
+           <![CDATA[This plugin ensures good management of timezones. Is a must when GLPI is used worldwide.
 				Since version 2.0.0 plugin is compatible with PHP 5 and PHP 7,
-				Since version 2.0.0 fr_FR has been added.]]></en>
+				Since version 2.0.0 fr_FR has been added.
+        Since version 2.0.3 ru_RU has been added.
+        ]]></en>
       </long>
    </description>
    <homepage>https://github.com/tomolimo/timezones</homepage>
@@ -39,31 +44,34 @@
           <compatibility>0.90</compatibility>
 		</version>
 		<version>
-          <num>2.0.2</num>
+          <num>2.0.3</num>
           <compatibility>0.85</compatibility>
 		</version><version>
-          <num>2.0.2</num>
+          <num>2.0.3</num>
           <compatibility>0.90</compatibility>
 		</version><version>
-          <num>2.0.2</num>
+          <num>2.0.3</num>
           <compatibility>9.1</compatibility>
 		</version>
    </versions>
    <langs>
-      <lang>en_GB</lang>
-      <lang>fr_FR</lang>
+     <lang>en_GB</lang>
+     <lang>fr_FR</lang>
+     <lang>ru_RU</lang>
    </langs>
    <license><![CDATA[GPL v2+]]></license>
    <tags>
          <fr>
-            <tag>Calendrier</tag>
-            <tag>Helpdesk</tag>
+           <tag>Fuseaux horaires</tag>
+           <tag>Calendrier</tag>
+           <tag>Helpdesk</tag>
 			<tag>Utilisateurs</tag>
 			<tag>Données</tag>
          </fr>
          <en>
-            <tag>Calendar</tag>
-            <tag>Helpdesk</tag>
+           <tag>Time zones</tag>
+           <tag>Calendar</tag>
+           <tag>Helpdesk</tag>
 			<tag>Users</tag>
 			<tag>Data</tag>
          </en>
