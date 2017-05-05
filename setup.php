@@ -81,7 +81,7 @@ function plugin_init_timezones() {
 function plugin_version_timezones() {
 
    return array('name'           => 'Timezones',
-                'version'        => '2.0.3',
+                'version'        => '2.1.2',
                 'author'         => 'Olivier Moron',
                 'license'        => 'GPLv2+',
                 'homepage'       => 'https://github.com/tomolimo/timezones',
@@ -120,18 +120,24 @@ function plugin_timezones_check_prerequisites() {
  * @return bool
  */
 function plugin_timezones_check_config($verbose=false) {
-   global $DB,$LANG;
+   global $DB, $LANG;
 
-    // check if all datetime fields of the glpi db have been converted to timestamp otherwise, timezone management can't be done correctly
-   $query = "SELECT DISTINCT( `INFORMATION_SCHEMA`.`COLUMNS`.`TABLE_NAME` ), TABLE_TYPE from `INFORMATION_SCHEMA`.`COLUMNS`
+   $plug = new Plugin;
+   if ($plug->isActivated('timezones')) {
+      // check if all datetime fields of the glpi db have been converted to timestamp otherwise, timezone management can't be done correctly
+      $query = "SELECT DISTINCT( `INFORMATION_SCHEMA`.`COLUMNS`.`TABLE_NAME` ), TABLE_TYPE from `INFORMATION_SCHEMA`.`COLUMNS`
                JOIN `INFORMATION_SCHEMA`.`TABLES` ON `INFORMATION_SCHEMA`.`TABLES`.`TABLE_NAME` = `INFORMATION_SCHEMA`.`COLUMNS`.`TABLE_NAME` AND `INFORMATION_SCHEMA`.`TABLES`.`TABLE_TYPE` = 'BASE TABLE'
                WHERE `INFORMATION_SCHEMA`.`COLUMNS`.TABLE_SCHEMA = '".$DB->dbdefault."' AND `INFORMATION_SCHEMA`.`COLUMNS`.`COLUMN_TYPE` IN ('DATETIME') ; ";
-    $res = $DB->query( $query );
-   if ($DB->numrows( $res ) > 0) {
-      if ($verbose) {
-         echo $LANG['timezones']['dbnotconverted'];
+      $res = $DB->query( $query );
+      if ($DB->numrows( $res ) > 0) {
+         // will convert during GLPI execution any DATETIME fields that may have been added
+         include_once 'hook.php' ;
+         convertDB($verbose);
+         //if ($verbose) {
+         //   echo $LANG['timezones']['dbnotconverted'];
+         //}
+         //return false;
       }
-      return false;
    }
 
    return true;

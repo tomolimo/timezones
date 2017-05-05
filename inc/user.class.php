@@ -10,7 +10,12 @@
  */
 class PluginTimezonesUser extends CommonDBTM
 {
-
+   /**
+    * Summary of getTabNameForItem
+    * @param CommonGLPI $item         is item
+    * @param mixed      $withtemplate is using a template
+    * @return array
+    */
    function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
       global $LANG;
 
@@ -18,6 +23,13 @@ class PluginTimezonesUser extends CommonDBTM
 
    }
 
+   /**
+    * Summary of displayTabContentForItem
+    * @param CommonGLPI $item         is the item
+    * @param mixed      $tabnum       is the tab num
+    * @param mixed      $withtemplate is using a template
+    * @return boolean
+    */
    static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
 
       if (in_array( $item->getType(), array( 'Preference', 'User' ))) {
@@ -28,6 +40,12 @@ class PluginTimezonesUser extends CommonDBTM
       return true;
    }
 
+   /**
+    * Summary of showForm
+    * @param mixed $user_id is the user id
+    * @param mixed $options some options
+    * @return void
+    */
    function showForm($user_id, $options=array()) {
       global $LANG;
 
@@ -41,7 +59,7 @@ class PluginTimezonesUser extends CommonDBTM
          if (!$tzID) {
             $tz=ini_get('date.timezone');
             if (empty($tz)) {
-                $tz = @date_default_timezone_get();
+               $tz = @date_default_timezone_get();
             }
             $this->add( array( 'users_id' => $user_id, 'timezone' => $tz) );
             $tzID = $this->getID();
@@ -99,7 +117,7 @@ class PluginTimezonesUser extends CommonDBTM
 
     /**
      * Summary of getIDFromUserID
-     * @param mixed $user_id
+     * @param mixed $user_id is the user id
      * @return mixed returns id of record if found, false otherwise
      */
    function getIDFromUserID( $user_id ) {
@@ -111,21 +129,22 @@ class PluginTimezonesUser extends CommonDBTM
       return false;
    }
 
-    /**
-     * Summary of preItemUpdate
-     * will add or update record in DB
-     * @param CommonDBTM $parm
-     */
-   static function preItemUpdate( CommonDBTM $parm ) {
+   /**
+   * Summary of preItemUpdate
+   * will add or update record in DB
+   * @param CommonDBTM $item is the item
+   * @return void
+   */
+   static function preItemUpdate( CommonDBTM $item ) {
       global $DB;
 
-      if ($parm->getType() == 'User' && isset( $parm->input['plugin_timezones_users_timezone'])) {
-          //$query = "REPLACE INTO `glpi_plugin_timezones_users` (`users_id`, `timezone`) VALUES (".$parm->getID().", '".$parm->input['plugin_timezones_users_timezone']."');";
-          //$DB->query( $query ) ;
-          $tzUser = new self;
-          $data = array( 'users_id' => $parm->getID(), 'timezone' => $parm->input['plugin_timezones_users_timezone'] );
-          //check if datas already inserted
-          $found = $tzUser->getIDFromUserID($parm->getID());
+      if ($item->getType() == 'User' && isset( $item->input['plugin_timezones_users_timezone'])) {
+         //$query = "REPLACE INTO `glpi_plugin_timezones_users` (`users_id`, `timezone`) VALUES (".$parm->getID().", '".$parm->input['plugin_timezones_users_timezone']."');";
+         //$DB->query( $query ) ;
+         $tzUser = new self;
+         $data = array( 'users_id' => $item->getID(), 'timezone' => $item->input['plugin_timezones_users_timezone'] );
+         //check if datas already inserted
+         $found = $tzUser->getIDFromUserID($item->getID());
          if (!$found) {
             $tzUser->add($data);
          } else {

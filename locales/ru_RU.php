@@ -11,4 +11,3 @@ $LANG['timezones']['item']['header']="Управление часовым поя
 $LANG['timezones']['item']['dropdown']="Выбрать ваш Часовой пояс";
 $LANG['timezones']['item']['submit']="Сохранить";
 
-?>
