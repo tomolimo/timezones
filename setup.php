@@ -2,7 +2,7 @@
 /*
  * -------------------------------------------------------------------------
 Timezones management plugin
-Copyright (C) 2015 by Raynet SAS a company of A.Raymond Network.
+Copyright (C) 2015-2016-2017 by Raynet SAS a company of A.Raymond Network.
 
 http://www.araymond.com
 -------------------------------------------------------------------------
@@ -81,11 +81,11 @@ function plugin_init_timezones() {
 function plugin_version_timezones() {
 
    return array('name'           => 'Timezones',
-                'version'        => '2.1.2',
+                'version'        => '2.2.0',
                 'author'         => 'Olivier Moron',
                 'license'        => 'GPLv2+',
                 'homepage'       => 'https://github.com/tomolimo/timezones',
-                'minGlpiVersion' => '0.85');// For compatibility / no install in version < 0.85
+                'minGlpiVersion' => '9.2');
 }
 
 
@@ -97,7 +97,7 @@ function plugin_timezones_check_prerequisites() {
     global $DB, $LANG;
 
     // Strict version check (could be less strict, or could allow various version)
-   if (version_compare(GLPI_VERSION, '0.85', 'lt')) {
+   if (version_compare(GLPI_VERSION, '9.2', 'lt')) {
         echo $LANG['timezones']['glpiversion'];
         return false;
    }

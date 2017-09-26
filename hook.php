@@ -8,7 +8,7 @@
 function plugin_timezones_install() {
     global $DB;
 
-   if (!TableExists("glpi_plugin_timezones_users")) {
+   if (!$DB->tableExists("glpi_plugin_timezones_users")) {
       $query = "  CREATE TABLE `glpi_plugin_timezones_users` (
 	                    `id` INT(11) NOT NULL AUTO_INCREMENT,
 	                    `users_id` INT(11) NOT NULL,
@@ -24,7 +24,7 @@ function plugin_timezones_install() {
 
       $DB->query($query) or die("error creating glpi_plugin_timezones_users" . $DB->error());
 
-   } else if (!FieldExists("glpi_plugin_timezones_users", "users_id")) {
+   } else if (!$DB->fieldExists("glpi_plugin_timezones_users", "users_id")) {
        $query = "  ALTER TABLE `glpi_plugin_timezones_users`
 	                    ADD COLUMN `id` INT(11) NOT NULL AUTO_INCREMENT FIRST,
 	                    CHANGE COLUMN `id` `users_id` INT(11) NOT NULL AFTER `id`,
@@ -37,7 +37,7 @@ function plugin_timezones_install() {
 
    }
 
-   if (!TableExists("glpi_plugin_timezones_dbbackups")) {
+   if (!$DB->tableExists("glpi_plugin_timezones_dbbackups")) {
         $query = "  CREATE TABLE `glpi_plugin_timezones_dbbackups` (
 	                `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	                `table_name` VARCHAR(255) NULL ,
@@ -50,7 +50,7 @@ function plugin_timezones_install() {
         $DB->query($query) or die("error creating glpi_plugin_timezones_dbbackups" . $DB->error());
    }
 
-   if (!TableExists("glpi_plugin_timezones_tasks_localtimes")) {
+   if (!$DB->tableExists("glpi_plugin_timezones_tasks_localtimes")) {
         $query = " CREATE TABLE `glpi_plugin_timezones_tasks_localtimes` (
 	                    `id` INT(11) NOT NULL AUTO_INCREMENT,
 	                    `items_type` VARCHAR(50) NOT NULL,
@@ -68,7 +68,7 @@ function plugin_timezones_install() {
 
         $DB->query($query) or die("error creating glpi_plugin_timezones_tasks_localtimes" . $DB->error());
 
-   } else if (!FieldExists("glpi_plugin_timezones_tasks_localtimes", "tz_name")) {
+   } else if (!$DB->fieldExists("glpi_plugin_timezones_tasks_localtimes", "tz_name")) {
       $query = "  ALTER TABLE `glpi_plugin_timezones_tasks_localtimes`
 	                  ADD COLUMN `tz_name` VARCHAR(64) NULL AFTER `end`;
                 ";
