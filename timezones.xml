@@ -12,12 +12,9 @@
       <long>
          <fr>
 <![CDATA[Ce plugin est fait pour assurer la bonne gestion des timezones. Particulièrement utile lorsque GLPI est utilisé dans un contexte international.
-
-Depuis la version 2.0.0, le plugin est compatible avec PHP 5 et PHP 7,
-
-Depuis la version 2.0.0, la localisation fr_FR a été ajouté.
-
-Depuis la version 2.0.3, la localisation ru_RU a été ajouté.]]>
+ Depuis la version 2.0.0, le plugin est compatible avec PHP 5 et PHP 7,
+ Depuis la version 2.0.0, la localisation fr_FR a été ajouté.
+ Depuis la version 2.0.3, la localisation ru_RU a été ajouté.]]>
          </fr>
          <en>
 <![CDATA[This plugin ensures good management of timezones. Is a must when GLPI is used worldwide.
