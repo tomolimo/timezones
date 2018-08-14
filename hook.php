@@ -150,7 +150,7 @@ function convertDB($echo=false){
 
       // must delete last ',' from $tablebackup and $tablealter if we have one
       // create backup of the column definitions so that we may apply them to restore database when uninstalling plugin
-      $tablebackup = $DB->dbh->real_escape_string( rtrim( $tablebackup, "," ) );
+      $tablebackup = $DB->escape( rtrim( $tablebackup, "," ) );
       $tablealter =  rtrim( $tablealter, "," );
 
       // special case for glpi_*tasks tables for objects like TicketTask, ProblemTask, ChangeTask
