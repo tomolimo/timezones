@@ -6,23 +6,30 @@
     <logo>https://raw.githubusercontent.com/tomolimo/timezones/master/timezones.png</logo>
    <description>
       <short>
-         <fr><![CDATA[Gère les multi-timezones.]]></fr>
-         <en><![CDATA[Multi-timezones management.]]></en>
+	 <cs><![CDATA[Správa vícero časových zón.]]></cs>
+	 <en><![CDATA[Multi-timezones management.]]></en>
+	 <fr><![CDATA[Gère les multi-timezones.]]></fr>
       </short>
       <long>
-         <fr>Ce plugin est fait pour assurer la bonne gestion des timezones. Particulièrement utile lorsque GLPI est utilisé dans un contexte international.  
-
-* Depuis la version 2.0.0, le plugin est compatible avec PHP 5 et PHP 7,  
-* Depuis la version 2.0.0, la localisation fr_FR a été ajouté.  
-* Depuis la version 2.0.3, la localisation ru_RU a été ajouté.  
-         </fr>
+         <cs>Tento zásuvný modul zajišťuje dobrou správu časových zón. Je nutný pokud je instance GLPI využívána z celého světa.  
+         
+* Od verze 2.0.0 je zásuvný modul kompatibilní s PHP 5 a PHP 7,  
+* Od verze 2.0.0, byl přidán překlad do fr_FR.  
+* Od verze 2.0.3, byl přidán překlad do ru_RU.  
+         </cs>
          <en>This plugin ensures good management of timezones. Is a must when GLPI is used worldwide.  
          
 * Since version 2.0.0, plugin is compatible with PHP 5 and PHP 7,  
 * Since version 2.0.0, fr_FR has been added.  
 * Since version 2.0.3, ru_RU has been added.  
          </en>
-      </long>
+         <fr>Ce plugin est fait pour assurer la bonne gestion des timezones. Particulièrement utile lorsque GLPI est utilisé dans un contexte international.  
+
+* Depuis la version 2.0.0, le plugin est compatible avec PHP 5 et PHP 7,  
+* Depuis la version 2.0.0, la localisation fr_FR a été ajouté.  
+* Depuis la version 2.0.3, la localisation ru_RU a été ajouté.  
+         </fr>
+     </long>
    </description>
    <homepage>https://github.com/tomolimo/timezones</homepage>
    <download>https://github.com/tomolimo/timezones/releases</download>
@@ -62,25 +69,33 @@
 		</version>
    </versions>
    <langs>
+     <lang>cs_CZ</lang>
      <lang>en_GB</lang>
      <lang>fr_FR</lang>
      <lang>ru_RU</lang>
    </langs>
    <license><![CDATA[GPL v2+]]></license>
    <tags>
-         <fr>
-            <tag>Fuseaux horaires</tag>
-            <tag>Calendrier</tag>
-            <tag>Helpdesk</tag>
-			   <tag>Utilisateurs</tag>
-			   <tag>Données</tag>
-         </fr>
+         <cs>
+           <tag>Časové zóny</tag>
+           <tag>Kalendář</tag>
+           <tag>Služba podpory</tag>
+	   <tag>Uživatelé</tag>
+	   <tag>Data</tag>
+         </cs>
          <en>
            <tag>Time zones</tag>
            <tag>Calendar</tag>
            <tag>Helpdesk</tag>
-			   <tag>Users</tag>
-			   <tag>Data</tag>
+	   <tag>Users</tag>
+	   <tag>Data</tag>
          </en>
+         <fr>
+            <tag>Fuseaux horaires</tag>
+            <tag>Calendrier</tag>
+            <tag>Helpdesk</tag>
+            <tag>Utilisateurs</tag>
+            <tag>Données</tag>
+         </fr>
    </tags>
 </root>
