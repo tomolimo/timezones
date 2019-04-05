@@ -1,3 +1,7 @@
+# Native in GLPI 9.5.0
+
+Timezones has been integrated into GLPI 9.5.0
+
 # Timezones
 
 This plugin ensures good management of timezones. Is a must when GLPi is used worldwide.
