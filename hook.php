@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Summary of plugin_timezones_install
  * @return true or die!
@@ -25,7 +24,7 @@ function plugin_timezones_install() {
       $DB->query($query) or die("error creating glpi_plugin_timezones_users" . $DB->error());
 
    } else if (!$DB->fieldExists("glpi_plugin_timezones_users", "users_id")) {
-       $query = "  ALTER TABLE `glpi_plugin_timezones_users`
+      $query = "  ALTER TABLE `glpi_plugin_timezones_users`
 	                    ADD COLUMN `id` INT(11) NOT NULL AUTO_INCREMENT FIRST,
 	                    CHANGE COLUMN `id` `users_id` INT(11) NOT NULL AFTER `id`,
 	                    DROP PRIMARY KEY,
@@ -38,7 +37,7 @@ function plugin_timezones_install() {
    }
 
    if (!$DB->tableExists("glpi_plugin_timezones_dbbackups")) {
-        $query = "  CREATE TABLE `glpi_plugin_timezones_dbbackups` (
+       $query = "  CREATE TABLE `glpi_plugin_timezones_dbbackups` (
 	                `date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	                `table_name` VARCHAR(255) NULL ,
 	                `alter_table` TEXT NULL
@@ -47,11 +46,11 @@ function plugin_timezones_install() {
                 ENGINE=InnoDB;
 			";
 
-        $DB->query($query) or die("error creating glpi_plugin_timezones_dbbackups" . $DB->error());
+       $DB->query($query) or die("error creating glpi_plugin_timezones_dbbackups" . $DB->error());
    }
 
    if (!$DB->tableExists("glpi_plugin_timezones_tasks_localtimes")) {
-        $query = " CREATE TABLE `glpi_plugin_timezones_tasks_localtimes` (
+       $query = " CREATE TABLE `glpi_plugin_timezones_tasks_localtimes` (
 	                    `id` INT(11) NOT NULL AUTO_INCREMENT,
 	                    `items_type` VARCHAR(50) NOT NULL,
 	                    `items_id` INT(11) NOT NULL,
@@ -66,7 +65,7 @@ function plugin_timezones_install() {
                     ;
 			";
 
-        $DB->query($query) or die("error creating glpi_plugin_timezones_tasks_localtimes" . $DB->error());
+       $DB->query($query) or die("error creating glpi_plugin_timezones_tasks_localtimes" . $DB->error());
 
    } else if (!$DB->fieldExists("glpi_plugin_timezones_tasks_localtimes", "tz_name")) {
       $query = "  ALTER TABLE `glpi_plugin_timezones_tasks_localtimes`
@@ -88,7 +87,7 @@ function plugin_timezones_install() {
  * @param mixed $echo
  * @return boolean true if success, else will die
  */
-function convertDB($echo=false){
+function convertDB($echo = false) {
    global $DB;
 
    $now = date('Y-m-d H:i:s' );
@@ -178,10 +177,9 @@ function convertDB($echo=false){
          $DB->query( $query );
       }
 
-
       // apply alter to table
       $query ="ALTER TABLE  `".$table['TABLE_NAME']."` ".$tablealter.";";
-      if( $echo ) {
+      if ($echo) {
          echo $query;
       }
       $DB->query( $query ) or die( " --> error when applying ". $DB->error()."\n");
@@ -189,11 +187,11 @@ function convertDB($echo=false){
       $query = "INSERT INTO `glpi_plugin_timezones_dbbackups` ( `date`, `table_name`, `alter_table`) VALUES ( '$now', '".$table['TABLE_NAME']."', 'ALTER TABLE  `".$table['TABLE_NAME']."` $tablebackup' );";
       $DB->query( $query ) or die( ' --> error when backing up '.$DB->error()."\n");
 
-      if( $echo ) {
+      if ($echo) {
          echo " --> done\n";
       }
    }
-   return true ;
+   return true;
 }
 
 
@@ -221,7 +219,7 @@ function plugin_init_session_timezones() {
  * Summary of setTimeZone
  * @param string $tz timezone to be set like 'Europe/Paris'
  */
-function setTimeZone( $tz ) {
+function setTimeZone($tz) {
     global $DB;
     $_SESSION['glpitimezone'] = $tz; // could be redondant, but anyway :)
     date_default_timezone_set( $tz ) or Toolbox::logInFile("php-errors", "Can't set tz: $tz for ".Session::getLoginUserID()."\n");
@@ -229,37 +227,37 @@ function setTimeZone( $tz ) {
     $_SESSION['glpi_currenttime'] = date("Y-m-d H:i:s");
 }
 
-function plugin_timezones_postinit( ) {
+function plugin_timezones_postinit() {
    if (isset($_SESSION['glpitimezone'])) {
       setTimeZone( $_SESSION['glpitimezone'] );
-      $formerHandler = set_error_handler(array('PluginTimezonesToolbox', 'userErrorHandlerNormal'));
+      $formerHandler = set_error_handler(['PluginTimezonesToolbox', 'userErrorHandlerNormal']);
    }
 }
 
 
 function plugin_item_add_update_timezones_tasks(CommonDBTM $parm) {
-    global $DB;
-    if($parm instanceof CommonITILTask){
-       $itemType = $parm->getType();
-       $begin = (isset($parm->fields['begin'])?$parm->fields['begin']:'');
-       $end = (isset($parm->fields['end'])?$parm->fields['end']:'');
+   global $DB;
+   if ($parm instanceof CommonITILTask) {
+      $itemType = $parm->getType();
+      $begin = (isset($parm->fields['begin'])?$parm->fields['begin']:'');
+      $end = (isset($parm->fields['end'])?$parm->fields['end']:'');
 
-       if( isset($_SESSION['glpitimezone']) ){
-          $tz = $_SESSION['glpitimezone'] ;
-       } else {
-          // a cron is running
-          // then use default timezone
-          $tz = @date_default_timezone_get();
-       }
-       $query = "REPLACE INTO `glpi_plugin_timezones_tasks_localtimes` (`items_type`, `items_id`, `begin`, `end`, `tz_name`) VALUES ('$itemType', ".$parm->getID().", '$begin', '$end', '$tz');";
-       $DB->query( $query );
-    }
+      if (isset($_SESSION['glpitimezone'])) {
+         $tz = $_SESSION['glpitimezone'];
+      } else {
+         // a cron is running
+         // then use default timezone
+         $tz = @date_default_timezone_get();
+      }
+      $query = "REPLACE INTO `glpi_plugin_timezones_tasks_localtimes` (`items_type`, `items_id`, `begin`, `end`, `tz_name`) VALUES ('$itemType', ".$parm->getID().", '$begin', '$end', '$tz');";
+      $DB->query( $query );
+   }
 
 }
 
 
 function plugin_item_add_update_timezones_dbconnection(Config $parm) {
-    $slaveDB = DBConnection::getDBSlaveConf( );
+   $slaveDB = DBConnection::getDBSlaveConf( );
    if ($slaveDB) {
       $host = $slaveDB->dbhost;
       $user = $slaveDB->dbuser;
@@ -322,7 +320,7 @@ function timezones_createSlaveConnectionFile($host, $user, $password, $DBname) {
             }
         }
     }
-} \n ?>";
+   }";
    $fp      = fopen(GLPI_CONFIG_DIR . "/config_db_slave.php", 'wt');
    if ($fp) {
       $fw = fwrite($fp, $DB_str);
@@ -332,10 +330,10 @@ function timezones_createSlaveConnectionFile($host, $user, $password, $DBname) {
    return false;
 }
 
-function plugin_timezones_getAddSearchOptions( $itemtype ) {
+function plugin_timezones_getAddSearchOptions($itemtype) {
    global $LANG;
 
-   $sopt = array();
+   $sopt = [];
    if ($itemtype == 'User') {
        $sopt[11001]['table']     = 'glpi_plugin_timezones_users';
        $sopt[11001]['field']     = 'timezone';
@@ -344,7 +342,7 @@ function plugin_timezones_getAddSearchOptions( $itemtype ) {
        $sopt[11001]['name']      = $LANG['timezones']['item']['tab'];
        $sopt[11001]['datatype']       = 'dropdown';
        $sopt[11001]['forcegroupby'] = true;
-       $sopt[11001]['joinparams'] = array('jointype' => 'child');
+       $sopt[11001]['joinparams'] = ['jointype' => 'child'];
        $sopt[11001]['searchtype']    = 'contains';
 
    }
@@ -379,7 +377,7 @@ function plugin_timezones_getAddSearchOptions( $itemtype ) {
    //    }
    //}
 
-function plugin_timezones_MassiveActionsFieldsDisplay($options=array()) {
+function plugin_timezones_MassiveActionsFieldsDisplay($options = []) {
    //$type,$table,$field,$linkfield
 
    $table     = $options['options']['table'];
@@ -392,7 +390,7 @@ function plugin_timezones_MassiveActionsFieldsDisplay($options=array()) {
          case 'glpi_plugin_timezones_users.timezone' :
             $timezones = PluginTimezonesUser::getTimezones( );
              // default timezone is the one of PHP
-            Dropdown::showFromArray('plugin_timezones_users_timezone', $timezones, array('value' => ini_get('date.timezone') ));
+            Dropdown::showFromArray('plugin_timezones_users_timezone', $timezones, ['value' => ini_get('date.timezone') ]);
             // Need to return true if specific display
              return true;
       }

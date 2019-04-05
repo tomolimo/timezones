@@ -16,10 +16,10 @@ class PluginTimezonesUser extends CommonDBTM
     * @param mixed      $withtemplate is using a template
     * @return array
     */
-   function getTabNameForItem(CommonGLPI $item, $withtemplate=0) {
+   function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
       global $LANG;
 
-      return array( 'timezonestimezones' => $LANG['timezones']['item']['tab'] );
+      return [ 'timezonestimezones' => $LANG['timezones']['item']['tab'] ];
 
    }
 
@@ -30,9 +30,9 @@ class PluginTimezonesUser extends CommonDBTM
     * @param mixed      $withtemplate is using a template
     * @return boolean
     */
-   static function displayTabContentForItem(CommonGLPI $item, $tabnum=1, $withtemplate=0) {
+   static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
 
-      if (in_array( $item->getType(), array( 'Preference', 'User' ))) {
+      if (in_array( $item->getType(), [ 'Preference', 'User' ])) {
          $pref = new self();
          $user_id = ($item->getType()=='Preference'?Session::getLoginUserID():$item->getID());
          $pref->showForm($user_id);
@@ -46,7 +46,7 @@ class PluginTimezonesUser extends CommonDBTM
     * @param mixed $options some options
     * @return void
     */
-   function showForm($user_id, $options=array()) {
+   function showForm($user_id, $options = []) {
       global $LANG;
 
       $target = $this->getFormURL();
@@ -61,7 +61,7 @@ class PluginTimezonesUser extends CommonDBTM
             if (empty($tz)) {
                $tz = @date_default_timezone_get();
             }
-            $this->add( array( 'users_id' => $user_id, 'timezone' => $tz) );
+            $this->add( [ 'users_id' => $user_id, 'timezone' => $tz] );
             $tzID = $this->getID();
          } else {
             $this->getFromDB( $tzID );
@@ -81,7 +81,7 @@ class PluginTimezonesUser extends CommonDBTM
       echo "<td>".$LANG['timezones']['item']['dropdown']." :</td><td>";
 
       $timezones = self::getTimezones( );
-      Dropdown::showFromArray('timezone', $timezones, array('value' => $this->fields["timezone"]));
+      Dropdown::showFromArray('timezone', $timezones, ['value' => $this->fields["timezone"]]);
 
       echo "</td></tr>";
 
@@ -98,10 +98,10 @@ class PluginTimezonesUser extends CommonDBTM
      * Summary of getTimezones
      * @return array: an array of string (timezones name). This list is checked with MySQL time_zone list
      */
-   static function getTimezones( ) {
+   static function getTimezones() {
       global $DB;
 
-      $tz = array(); //default $tz is empty
+      $tz = []; //default $tz is empty
       $phpTimezones = DateTimeZone::listIdentifiers();
       $now = new DateTime;
       $query = "SELECT Name FROM mysql.time_zone_name";
@@ -120,7 +120,7 @@ class PluginTimezonesUser extends CommonDBTM
      * @param mixed $user_id is the user id
      * @return mixed returns id of record if found, false otherwise
      */
-   function getIDFromUserID( $user_id ) {
+   function getIDFromUserID($user_id) {
       $found = $this->find("users_id = ".$user_id);
       if ($found) {
          $first_found = array_pop($found);
@@ -135,14 +135,14 @@ class PluginTimezonesUser extends CommonDBTM
    * @param CommonDBTM $item is the item
    * @return void
    */
-   static function preItemUpdate( CommonDBTM $item ) {
+   static function preItemUpdate(CommonDBTM $item) {
       global $DB;
 
       if ($item->getType() == 'User' && isset( $item->input['plugin_timezones_users_timezone'])) {
          //$query = "REPLACE INTO `glpi_plugin_timezones_users` (`users_id`, `timezone`) VALUES (".$parm->getID().", '".$parm->input['plugin_timezones_users_timezone']."');";
          //$DB->query( $query ) ;
          $tzUser = new self;
-         $data = array( 'users_id' => $item->getID(), 'timezone' => $item->input['plugin_timezones_users_timezone'] );
+         $data = [ 'users_id' => $item->getID(), 'timezone' => $item->input['plugin_timezones_users_timezone'] ];
          //check if datas already inserted
          $found = $tzUser->getIDFromUserID($item->getID());
          if (!$found) {

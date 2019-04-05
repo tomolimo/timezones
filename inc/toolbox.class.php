@@ -16,7 +16,7 @@ class PluginTimezonesToolbox extends Toolbox {
     * @param $text   string   text to log
     * @param $force  boolean  force log in file not seeing use_log_in_files config (false by default)
     **/
-   static function logInFile($name, $text, $force=false) {
+   static function logInFile($name, $text, $force = false) {
       global $CFG_GLPI;
 
       $user = '';

@@ -30,6 +30,7 @@ along with GLPI. If not, see <http://www.gnu.org/licenses/>.
 // Original Author of file: Olivier Moron
 // Purpose of file: to setup time zone management plugin to GLPI
 // ----------------------------------------------------------------------
+define ("PLUGIN_TIMEZONES_VERSION", "2.3.2");
 
 /**
  * Summary of plugin_init_timezones
@@ -38,7 +39,7 @@ function plugin_init_timezones() {
     global $PLUGIN_HOOKS,$CFG_GLPI;
 
    Plugin::registerClass('PluginTimezonesUser',
-                         array('addtabon'                    => array('Preference', 'User')));
+                         ['addtabon'                    => ['Preference', 'User']]);
 
    // Init session
    $PLUGIN_HOOKS['init_session']['timezones'] = 'plugin_init_session_timezones';
@@ -46,23 +47,23 @@ function plugin_init_timezones() {
    $PLUGIN_HOOKS['post_init']['timezones'] = 'plugin_timezones_postinit';
 
    $PLUGIN_HOOKS['pre_item_update']['timezones']
-      = array( 'User' => array( 'PluginTimezonesUser', 'preItemUpdate'));
+      = [ 'User' => [ 'PluginTimezonesUser', 'preItemUpdate']];
 
    $PLUGIN_HOOKS['item_update']['timezones']
-      = array( 'TicketTask' => 'plugin_item_add_update_timezones_tasks'
-                ,'ProblemTask' => 'plugin_item_add_update_timezones_tasks'
-                ,'ProjectTask' => 'plugin_item_add_update_timezones_tasks'
-                ,'ChangeTask' => 'plugin_item_add_update_timezones_tasks'
-                ,'Config' => 'plugin_item_add_update_timezones_dbconnection'
-              );
+      = [   'TicketTask' => 'plugin_item_add_update_timezones_tasks',
+            'ProblemTask' => 'plugin_item_add_update_timezones_tasks',
+            'ProjectTask' => 'plugin_item_add_update_timezones_tasks',
+            'ChangeTask' => 'plugin_item_add_update_timezones_tasks',
+            'Config' => 'plugin_item_add_update_timezones_dbconnection'
+        ];
 
    $PLUGIN_HOOKS['item_add']['timezones']
-      = array( 'TicketTask' => 'plugin_item_add_update_timezones_tasks'
-                ,'ProblemTask' => 'plugin_item_add_update_timezones_tasks'
-                ,'ProjectTask' => 'plugin_item_add_update_timezones_tasks'
-                ,'ChangeTask' => 'plugin_item_add_update_timezones_tasks'
-                ,'Config' => 'plugin_item_add_update_timezones_dbconnection'
-              );
+      = [   'TicketTask' => 'plugin_item_add_update_timezones_tasks',
+            'ProblemTask' => 'plugin_item_add_update_timezones_tasks',
+            'ProjectTask' => 'plugin_item_add_update_timezones_tasks',
+            'ChangeTask' => 'plugin_item_add_update_timezones_tasks',
+            'Config' => 'plugin_item_add_update_timezones_dbconnection'
+        ];
 
    //$tz=(isset($_SESSION['glpitimezone'])?$_SESSION['glpitimezone']:date_default_timezone_get());
    //$PLUGIN_HOOKS['add_javascript']['timezones'] = "js/tz.php?tz=$tz";
@@ -80,12 +81,12 @@ function plugin_init_timezones() {
  */
 function plugin_version_timezones() {
 
-   return array('name'           => 'Timezones',
-                'version'        => '2.2.0',
+   return ['name'           => 'Timezones',
+                'version'        => PLUGIN_TIMEZONES_VERSION,
                 'author'         => 'Olivier Moron',
                 'license'        => 'GPLv2+',
                 'homepage'       => 'https://github.com/tomolimo/timezones',
-                'minGlpiVersion' => '9.2');
+                'minGlpiVersion' => '9.2'];
 }
 
 
@@ -119,7 +120,7 @@ function plugin_timezones_check_prerequisites() {
  * @param mixed $verbose
  * @return bool
  */
-function plugin_timezones_check_config($verbose=false) {
+function plugin_timezones_check_config($verbose = false) {
    global $DB, $LANG;
 
    $plug = new Plugin;
@@ -131,7 +132,7 @@ function plugin_timezones_check_config($verbose=false) {
       $res = $DB->query( $query );
       if ($DB->numrows( $res ) > 0) {
          // will convert during GLPI execution any DATETIME fields that may have been added
-         include_once 'hook.php' ;
+         include_once 'hook.php';
          convertDB($verbose);
          //if ($verbose) {
          //   echo $LANG['timezones']['dbnotconverted'];
