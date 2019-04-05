@@ -30,7 +30,7 @@ along with GLPI. If not, see <http://www.gnu.org/licenses/>.
 // Original Author of file: Olivier Moron
 // Purpose of file: to setup time zone management plugin to GLPI
 // ----------------------------------------------------------------------
-define ("PLUGIN_TIMEZONES_VERSION", "2.3.2");
+define ("PLUGIN_TIMEZONES_VERSION", "2.4.0");
 
 /**
  * Summary of plugin_init_timezones
@@ -86,7 +86,7 @@ function plugin_version_timezones() {
                 'author'         => 'Olivier Moron',
                 'license'        => 'GPLv2+',
                 'homepage'       => 'https://github.com/tomolimo/timezones',
-                'minGlpiVersion' => '9.2'];
+                'minGlpiVersion' => '9.3'];
 }
 
 
@@ -98,7 +98,7 @@ function plugin_timezones_check_prerequisites() {
     global $DB, $LANG;
 
     // Strict version check (could be less strict, or could allow various version)
-   if (version_compare(GLPI_VERSION, '9.2', 'lt')) {
+   if (version_compare(GLPI_VERSION, '9.3', 'lt')) {
         echo $LANG['timezones']['glpiversion'];
         return false;
    }
