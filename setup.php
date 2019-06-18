@@ -30,7 +30,7 @@ along with GLPI. If not, see <http://www.gnu.org/licenses/>.
 // Original Author of file: Olivier Moron
 // Purpose of file: to setup time zone management plugin to GLPI
 // ----------------------------------------------------------------------
-define ("PLUGIN_TIMEZONES_VERSION", "2.4.0");
+define ("PLUGIN_TIMEZONES_VERSION", "2.4.1");
 
 /**
  * Summary of plugin_init_timezones
