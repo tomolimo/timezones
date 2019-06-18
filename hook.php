@@ -203,15 +203,20 @@ function plugin_timezones_uninstall() {
 
 
 function plugin_init_session_timezones() {
-   if (!isset($_SESSION["glpicronuserrunning"]) || (Session::getLoginUserID() != $_SESSION["glpicronuserrunning"])) {
+   $users_id = Session::getLoginUserID();
+   if (!isset($_SESSION["glpicronuserrunning"]) || ($users_id != $_SESSION["glpicronuserrunning"])) {
       $pref = new PluginTimezonesUser;
-      $tzid = $pref->getIDFromUserID( Session::getLoginUserID() );
-
-      if ($tzid && $pref->getFromDB( $tzid )) {
-         setTimeZone( $pref->fields['timezone'] );
-      } else {
-         setTimeZone( @date_default_timezone_get() );
+      $tzid = false;
+      if ($users_id) {
+         $tzid = $pref->getIDFromUserID( $users_id );
       }
+
+      // default value
+      $tz = isset($_SESSION['glpitimezone']) ? $_SESSION['glpitimezone'] : @date_default_timezone_get() ;
+      if ($tzid && $pref->getFromDB( $tzid )) {
+         $tz = $pref->fields['timezone'];
+      }
+      setTimeZone( $tz );
    }
 }
 
@@ -221,17 +226,16 @@ function plugin_init_session_timezones() {
  */
 function setTimeZone($tz) {
     global $DB;
-    $_SESSION['glpitimezone'] = $tz; // could be redondant, but anyway :)
+    $_SESSION['glpitimezone'] = $tz;
     date_default_timezone_set( $tz ) or Toolbox::logInFile("php-errors", "Can't set tz: $tz for ".Session::getLoginUserID()."\n");
-    $DB->query("SET SESSION time_zone = '$tz'" ) or Toolbox::logInFile("php-errors", "Can't set tz: $tz - ". $DB->error()."\n"); //die ("Can't set tz: ". $DB->error());
+    $DB->query("SET SESSION time_zone = '$tz'" ) or Toolbox::logInFile("php-errors", "Can't set tz: $tz - ". $DB->error()."\n");
     $_SESSION['glpi_currenttime'] = date("Y-m-d H:i:s");
 }
 
 function plugin_timezones_postinit() {
-   if (isset($_SESSION['glpitimezone'])) {
-      setTimeZone( $_SESSION['glpitimezone'] );
-      $formerHandler = set_error_handler(['PluginTimezonesToolbox', 'userErrorHandlerNormal']);
-   }
+   $tz = isset($_SESSION['glpitimezone']) ? $_SESSION['glpitimezone'] : @date_default_timezone_get() ;
+   setTimeZone( $tz );
+   $formerHandler = set_error_handler(['PluginTimezonesToolbox', 'userErrorHandlerNormal']);
 }
 
 
