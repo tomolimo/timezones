@@ -16,6 +16,9 @@ GLPI: 9.2 | PHP: 5, 7 | locales: en, fr, ru, cs
 Version 2.4.0
 GLPI: 9.3 | PHP: 5, 7 | locales: en, fr, ru, cs
 
+Version 2.5.0
+GLPI: 9.4 | PHP: 5, 7 | locales: en, fr, ru, cs
+
 ## Installation procedure:
 Like any other GLPI plugin: you must copy the package to the plugins folder.
 

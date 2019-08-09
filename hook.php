@@ -82,22 +82,22 @@ function plugin_timezones_install() {
    return true;
 }
 
+
 /**
  * Summary of convertDB
  * @param mixed $echo
  * @return boolean true if success, else will die
  */
-function convertDB($echo = false) {
+function convertDB($echo = false, $res = null) {
    global $DB;
 
    $now = date('Y-m-d H:i:s' );
 
-   // we are going to update datetime, date and time (?) types to timestamp type
-   $query = "SELECT DISTINCT( `INFORMATION_SCHEMA`.`COLUMNS`.`TABLE_NAME` ), TABLE_TYPE from `INFORMATION_SCHEMA`.`COLUMNS`
-               JOIN `INFORMATION_SCHEMA`.`TABLES` ON `INFORMATION_SCHEMA`.`TABLES`.`TABLE_NAME` = `INFORMATION_SCHEMA`.`COLUMNS`.`TABLE_NAME` AND `INFORMATION_SCHEMA`.`TABLES`.`TABLE_TYPE` = 'BASE TABLE'
-               WHERE `INFORMATION_SCHEMA`.`COLUMNS`.TABLE_SCHEMA = '".$DB->dbdefault."' AND `INFORMATION_SCHEMA`.`COLUMNS`.`COLUMN_TYPE` IN ('DATETIME') ; ";
+   if (!$res) {
+      $res = needConvert();
+   }
 
-   foreach ($DB->request($query) as $table) {
+   foreach ($res as $table) {
       $tablealter = $tablebackup = ''; // init by default
 
       // get table create code to get accurate table definition for backup purpose

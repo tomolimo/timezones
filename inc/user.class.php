@@ -104,8 +104,11 @@ class PluginTimezonesUser extends CommonDBTM
       $tz = []; //default $tz is empty
       $phpTimezones = DateTimeZone::listIdentifiers();
       $now = new DateTime;
-      $query = "SELECT Name FROM mysql.time_zone_name";
-      foreach ($DB->request( $query ) as $mySQLTimezone) {
+      $res = $DB->request([
+                     'SELECT' => 'Name',
+                     'FROM'   => 'mysql.time_zone_name'
+         ]);
+      foreach ($res as $mySQLTimezone) {
          if (in_array( $mySQLTimezone['Name'], $phpTimezones )) {
             $now->setTimezone( new DateTimeZone( $mySQLTimezone['Name'] ) );
             $tz[ $mySQLTimezone['Name'] ] = $mySQLTimezone['Name'] . $now->format( " (T P)" );

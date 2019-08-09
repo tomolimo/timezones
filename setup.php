@@ -30,7 +30,7 @@ along with GLPI. If not, see <http://www.gnu.org/licenses/>.
 // Original Author of file: Olivier Moron
 // Purpose of file: to setup time zone management plugin to GLPI
 // ----------------------------------------------------------------------
-define ("PLUGIN_TIMEZONES_VERSION", "2.4.1");
+define ("PLUGIN_TIMEZONES_VERSION", "2.5.1");
 
 /**
  * Summary of plugin_init_timezones
@@ -116,6 +116,28 @@ function plugin_timezones_check_prerequisites() {
 
 
 /**
+ * Summary of needConvert
+ * @return boolean|DBmysqlIterator
+ */
+function needConvert() {
+   global $DB;
+   $query = "SELECT  `INFORMATION_SCHEMA`.`COLUMNS`.`COLUMN_NAME` from `INFORMATION_SCHEMA`.`COLUMNS`
+            WHERE `INFORMATION_SCHEMA`.`COLUMNS`.TABLE_SCHEMA = '".$DB->dbdefault."' AND `INFORMATION_SCHEMA`.`COLUMNS`.`COLUMN_TYPE` IN ('DATETIME') ;";
+   $res = $DB->request( $query );
+   if ($res->numrows() > 0) {      
+      $query = "SELECT DISTINCT( `INFORMATION_SCHEMA`.`COLUMNS`.`TABLE_NAME` ), TABLE_TYPE from `INFORMATION_SCHEMA`.`COLUMNS`
+            JOIN `INFORMATION_SCHEMA`.`TABLES` ON `INFORMATION_SCHEMA`.`TABLES`.`TABLE_NAME` = `INFORMATION_SCHEMA`.`COLUMNS`.`TABLE_NAME` AND `INFORMATION_SCHEMA`.`TABLES`.`TABLE_TYPE` = 'BASE TABLE'
+            WHERE `INFORMATION_SCHEMA`.`COLUMNS`.TABLE_SCHEMA = '".$DB->dbdefault."' AND `INFORMATION_SCHEMA`.`COLUMNS`.`COLUMN_TYPE` IN ('DATETIME') ; ";
+      $res = $DB->request( $query );
+      if ($res->numrows() > 0) {
+         return $res;
+      }
+   }
+   return false;
+}
+
+
+/**
  * Summary of plugin_timezones_check_config
  * @param mixed $verbose
  * @return bool
@@ -126,18 +148,10 @@ function plugin_timezones_check_config($verbose = false) {
    $plug = new Plugin;
    if ($plug->isActivated('timezones')) {
       // check if all datetime fields of the glpi db have been converted to timestamp otherwise, timezone management can't be done correctly
-      $query = "SELECT DISTINCT( `INFORMATION_SCHEMA`.`COLUMNS`.`TABLE_NAME` ), TABLE_TYPE from `INFORMATION_SCHEMA`.`COLUMNS`
-               JOIN `INFORMATION_SCHEMA`.`TABLES` ON `INFORMATION_SCHEMA`.`TABLES`.`TABLE_NAME` = `INFORMATION_SCHEMA`.`COLUMNS`.`TABLE_NAME` AND `INFORMATION_SCHEMA`.`TABLES`.`TABLE_TYPE` = 'BASE TABLE'
-               WHERE `INFORMATION_SCHEMA`.`COLUMNS`.TABLE_SCHEMA = '".$DB->dbdefault."' AND `INFORMATION_SCHEMA`.`COLUMNS`.`COLUMN_TYPE` IN ('DATETIME') ; ";
-      $res = $DB->query( $query );
-      if ($DB->numrows( $res ) > 0) {
+      if ($res = needConvert()) {
          // will convert during GLPI execution any DATETIME fields that may have been added
          include_once 'hook.php';
-         convertDB($verbose);
-         //if ($verbose) {
-         //   echo $LANG['timezones']['dbnotconverted'];
-         //}
-         //return false;
+         convertDB($verbose, $res);
       }
    }
 

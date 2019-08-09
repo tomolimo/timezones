@@ -16,14 +16,26 @@ if ($plug->isActivated('timezones')) {
     // it has to be done only for 'on call' tasks
 
     // first we need to get the sons of Task Category 'on call' which has ID == 2 in order to build SQL query
-    $query = "SELECT sons_cache from glpi_taskcategories where id=2;";
-    $res = $DB->query( $query );
-   if ($res && $DB->numrows( $res ) > 0) {
-      $row = $DB->fetch_assoc( $res );
+   $res = $DB->request([
+                  'SELECT' => 'sons_cache',
+                  'FROM'   => 'glpi_taskcategories',
+                  'WHERE'  => ['id' => 2]
+      ]);
+    //$query = "SELECT sons_cache from glpi_taskcategories where id=2;";
+    //$res = $DB->query( $query );
+   //if ($res && $DB->numrows( $res ) > 0) {
+   if ($res && $res->numrows() > 0) {
+      //$row = $DB->fetch_assoc( $res );
+      $row = $res->next();
       $cat = importArrayFromDB($row['sons_cache']);
 
       // then build query to get 'On call' tasks
-      $query = "SELECT * FROM glpi_tickettasks WHERE taskcategories_id IN ( ".implode(',', $cat)." );";
+      //$query = "SELECT * FROM glpi_tickettasks WHERE taskcategories_id IN ( ".implode(',', $cat)." );";
+      $res = $DB->request(
+                     'glpi_tickettasks',
+                     [
+                        'taskcategories' => $cat
+                     ]);
       //TODO
    }
 
