@@ -165,15 +165,15 @@ function convertDB($echo = false) {
          //left join glpi_plugin_timezones_users on glpi_plugin_timezones_users.users_id=users_id_tech;
          // end drafts
 
-         $query = "INSERT INTO glpi_plugin_timezones_tasks_localtimes SELECT NULL, 'TicketTask' as items_type, id as items_id, `begin`, `end` FROM glpi_tickettasks;";
+         $query = "INSERT INTO glpi_plugin_timezones_tasks_localtimes SELECT NULL, 'TicketTask' as items_type, id as items_id, `begin`, `end`, NULL FROM glpi_tickettasks;";
          $DB->query( $query );
       }
       if ($table['TABLE_NAME'] == 'glpi_problemtasks') {
-         $query = "INSERT INTO glpi_plugin_timezones_tasks_localtimes SELECT NULL, 'ProblemTask' as items_type, id as items_id, `begin`, `end` FROM glpi_problemtasks;";
+         $query = "INSERT INTO glpi_plugin_timezones_tasks_localtimes SELECT NULL, 'ProblemTask' as items_type, id as items_id, `begin`, `end`, NULL FROM glpi_problemtasks;";
          $DB->query( $query );
       }
       if ($table['TABLE_NAME'] == 'glpi_changetasks') {
-         $query = "INSERT INTO glpi_plugin_timezones_tasks_localtimes SELECT NULL, 'ChangeTask' as items_type, id as items_id, `begin`, `end` FROM glpi_changetasks;";
+         $query = "INSERT INTO glpi_plugin_timezones_tasks_localtimes SELECT NULL, 'ChangeTask' as items_type, id as items_id, `begin`, `end`, NULL FROM glpi_changetasks;";
          $DB->query( $query );
       }
 
@@ -212,7 +212,7 @@ function plugin_init_session_timezones() {
       }
 
       // default value
-      $tz = isset($_SESSION['glpitimezone']) ? $_SESSION['glpitimezone'] : @date_default_timezone_get() ;
+      $tz = isset($_SESSION['glpitimezone']) ? $_SESSION['glpitimezone'] : @date_default_timezone_get();
       if ($tzid && $pref->getFromDB( $tzid )) {
          $tz = $pref->fields['timezone'];
       }
@@ -233,7 +233,7 @@ function setTimeZone($tz) {
 }
 
 function plugin_timezones_postinit() {
-   $tz = isset($_SESSION['glpitimezone']) ? $_SESSION['glpitimezone'] : @date_default_timezone_get() ;
+   $tz = isset($_SESSION['glpitimezone']) ? $_SESSION['glpitimezone'] : @date_default_timezone_get();
    setTimeZone( $tz );
    $formerHandler = set_error_handler(['PluginTimezonesToolbox', 'userErrorHandlerNormal']);
 }

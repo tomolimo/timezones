@@ -13,7 +13,7 @@ GLPI: 0.85, 0.90, 9.1 | PHP: 5, 7 | locales: en, fr, ru
 Version 2.2.0
 GLPI: 9.1, 9.2 | PHP: 5, 7 | locales: en, fr, ru, cs
 
-Version 2.3.2
+Version 2.3.x
 GLPI: 9.2 | PHP: 5, 7 | locales: en, fr, ru, cs
 
 ## Installation procedure:
